@@ -1,0 +1,16 @@
+conference,name,games_won,games_lost,id
+Eastern,Cleveland Cavaliers,64,18,CLE
+Eastern,Boston Celtics,61,21,BOS
+Eastern,New York Knicks,51,31,NYK
+Eastern,Indiana Pacers,50,32,IND
+Eastern,Milwaukee Bucks,48,34,MIL
+Eastern,Detroit Pistons,44,38,DET
+Eastern,Orlando Magic,41,41,ORL
+Eastern,Atlanta Hawks,40,42,ATL
+Eastern,Chicago Bulls,39,43,CHI
+Eastern,Miami Heats,37,45,MIA
+Eastern,Toronto Raptors,30,52,TOR
+Eastern,Brooklyn Nets,26,56,BKN
+Eastern,Philadelphia 76ers,24,58,PHI
+Eastern,Charlotte Hornets,19,63,CHA
+Eastern,Washington Wizards,18,64,WAS
