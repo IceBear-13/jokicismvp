@@ -43,6 +43,7 @@ The backend is powered by Spring Boot, providing:
 - Business logic implementation
 
 ### Running the server
+Remember to change the JDBC link and password to your PostgreSQL JDBC on /src/resources/application.properties
 ```bash
 cd server
 ./mvnw spring-boot:run
