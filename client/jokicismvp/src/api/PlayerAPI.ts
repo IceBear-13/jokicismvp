@@ -28,12 +28,12 @@ export class PlayerAPI implements IPlayerAPI {
         }
     }
 
-    async getPlayerByName(fName: string, lName: string): Promise<Player> {
+    async getPlayerByName(name:string): Promise<Player> {
         try {
-            const response = await axios.get<Player>(`${API_BASE_URL}/players/name/fName=${fName}&lName=${lName}`);
+            const response = await axios.get<Player>(`${API_BASE_URL}/players/name?name=${name}`);
             return response.data as Player;
         } catch (error) {
-            console.error(`Error fetching player with ID ${fName + " " + lName}:`, error);
+            console.error(`Error fetching player with ID ${name}:`, error);
             throw error;
         }
     }
@@ -134,9 +134,9 @@ export class PlayerAPI implements IPlayerAPI {
         return api.getPlayers();
     }
 
-    static async getPlayerByName(fName: string, lName: string): Promise<Player> {
+    static async getPlayerByName(name: string): Promise<Player> {
         const api = new PlayerAPI();
-        return api.getPlayerByName(fName, lName);
+        return api.getPlayerByName(name);
     }
 
     static async getPlayerByPoints(points: number): Promise<Player[]> {

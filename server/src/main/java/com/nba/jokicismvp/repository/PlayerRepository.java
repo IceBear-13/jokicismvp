@@ -22,4 +22,7 @@ public interface PlayerRepository extends JpaRepository<Player, String> {
     
     @Query("SELECT DISTINCT p FROM Player p")
     List<Player> findAllDistinct();
+
+    @Query("SELECT p FROM Player p WHERE name LIKE p.name")
+    List<Player> findByNameLike(String name);
 }

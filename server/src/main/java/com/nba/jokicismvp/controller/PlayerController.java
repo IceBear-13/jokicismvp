@@ -35,23 +35,20 @@ public class PlayerController {
     }
 
     /**
-     * Get a player by their full name
-     * Example: /api/players/name?fName=LeBron&lName=James
+     * Get a player by their ID
+     * Example: /api/players/id?id=12345
      * 
-     * @param fName First name of the player
-     * @param lName Last name of the player
+     * @param id ID of the player
      * @return Player object if found, null otherwise
      */
-    @GetMapping("/name")
-    public Player getPlayerByFullName(
-        @RequestParam(required=true) String fName, 
-        @RequestParam(required=true) String lName) {
+    @GetMapping("/id")
+    public Player getPlayerById(@RequestParam String id) {
 
-        if (fName == null || lName == null || fName.isEmpty() || lName.isEmpty()) {
+        if (id == null || id.isEmpty()) {
             return null; // exceptions to be added
         }
 
-        Player player = playerService.getPlayerByName(fName, lName);
+        Player player = playerService.getPlayerById(id);
         if (player == null) {
             return null; // exceptions to be added
         }
@@ -60,27 +57,20 @@ public class PlayerController {
     }
 
     /**
-     *  Get a player by their first name
-     *  Example: /api/players/fName?fname=LeBron
+     * Get all players that match a specific name pattern
+     * Example: /api/players/name?name=LeBron
      * 
-     * @param fname
-     * @return
+     * @param name Name pattern to search for
+     * @return List of Player objects that match the name pattern
      */
-    @GetMapping("/fName")
-    public List<Player> getByFname(@RequestParam String fname) {
-        return playerService.getPlayerByFName(fname);
-    }
+    @GetMapping("/name")
+    public List<Player> getPlayersByNameLike(@RequestParam String name) {
 
-    /**
-     *  Get a player by their last name
-     *  Example: /api/players/lName?lname=James
-     * 
-     * @param lname
-     * @return
-     */
-    @GetMapping("/lName")
-    public List<Player> getByLname(@RequestParam String lname) {
-        return  playerService.getPlayerByLName(lname);
+        if (name == null || name.isEmpty()) {
+            return null; // exceptions to be added
+        }
+
+        return playerService.getPlayersByNameLike(name);
     }
 
     /**

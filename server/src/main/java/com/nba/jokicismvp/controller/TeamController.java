@@ -3,6 +3,7 @@ package com.nba.jokicismvp.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +31,7 @@ public class TeamController {
      * @param param not used at all
      * @return List of Team objects
      */
+    @CrossOrigin(origins="http://localhost:5173")
     @GetMapping("/all")
     public List<Team> getAllTeams() {
         return teamService.getAllTeams();
@@ -79,7 +81,7 @@ public class TeamController {
 
     /**
      * Get all teams that belong to a specific city
-     * Example: /api/teams/city?city=Los_Angeles
+     * Example: /api/teams/city?city=Los+Angeles
      * 
      * @param city City of the team
      * @return List of Team objects belonging to the specified city
@@ -131,40 +133,8 @@ public class TeamController {
     }
 
     /**
-     * Get all teams that have a player with the specified first name
-     * Example: /api/teams/player/fName?fName=LeBron
-     * 
-     * @param fName First name of the player
-     * @return List of Team objects that have a player with the specified first name
-     */
-    // @GetMapping("/player/fName")
-    // public List<Team> getTeamsByPlayerFName(@RequestParam(required=true) String fName) {
-    //     if (fName == null || fName.isEmpty()) {
-    //         return null; // exceptions to be added
-    //     }
-
-    //     return teamService.getTeamsByPlayerFName(fName);
-    // }
-
-    /**
-     * Get all teams that have a player with the specified last name
-     * Example: /api/teams/player/lName?lName=James
-     * 
-     * @param lName Last name of the player
-     * @return List of Team objects that have a player with the specified last name
-     */
-    // @GetMapping("/player/lName")
-    // public List<Team> getTeamsByPlayerLName(@RequestParam(required=true) String lName) {
-    //     if (lName == null || lName.isEmpty()) {
-    //         return null; // exceptions to be added
-    //     }
-
-    //     return teamService.getTeamsByPlayerLName(lName);
-    // }
-
-    /**
      * Get a team by a player's full name
-     * Example: /api/teams/player/name?name=LeBron_James
+     * Example: /api/teams/player/name?name=LeBron+James
      * 
      * @param name Full name of the player
      * @return Team object if found, null otherwise
@@ -181,6 +151,38 @@ public class TeamController {
         }
 
         return team;
+    }
+
+    /**
+     * Get a team by their losses
+     * Example: /api/teams/losses?losses=10
+     * 
+     * @param losses Number of losses
+     * @return List of Team objects with losses greater than or equal to the specified number
+     */
+    @GetMapping("/losses")
+    public List<Team> getTeamsByLosses(@RequestParam(required=true) int losses) {
+        if (losses < 0) {
+            return null; // exceptions to be added
+        }
+
+        return teamService.getTeamsByLosses(losses);
+    }
+
+    /**
+     * Get a team by their wins
+     * Example: /api/teams/wins?wins=10
+     * 
+     * @param wins Number of wins
+     * @return List of Team objects with wins greater than or equal to the specified number
+     */
+    @GetMapping("/wins")
+    public List<Team> getTeamsByWins(@RequestParam(required=true) int wins) {
+        if (wins < 0) {
+            return null; // exceptions to be added
+        }
+
+        return teamService.getTeamsByWins(wins);
     }
 
     

@@ -34,17 +34,9 @@ public class PlayerService {
         return playerRepository.findById(id).orElse(null);
     }
 
-    public List<Player> getPlayerByFName(String fName) {
-        return playerRepository.findAll()
-                .stream()
-                .filter(player -> player.getFname().equalsIgnoreCase(fName))
-                .collect(Collectors.toList());
-    }
-
-    public List<Player> getPlayerByLName(String lName) {
-        return playerRepository.findAll()
-                .stream()
-                .filter(player -> player.getLname().equalsIgnoreCase(lName))
+    public List<Player> getPlayersByNameLike(String name) {
+        return playerRepository.findAll().stream()
+                .filter(player -> player.getName().toLowerCase().contains(name.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
@@ -156,5 +148,6 @@ public class PlayerService {
         }
         return null;
     }
+
     
 }

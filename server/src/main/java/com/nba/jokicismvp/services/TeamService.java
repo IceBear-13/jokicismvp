@@ -25,7 +25,7 @@ public class TeamService {
     public Team getTeamByName(String name) {
         return teamRepository.findAll()
                 .stream()
-                .filter(team -> team.getName().equalsIgnoreCase(name))
+                .filter(team -> team.getName().contains(name))
                 .findFirst()
                 .orElse(null);
     }
@@ -56,26 +56,26 @@ public class TeamService {
                 .orElse(null);
     }
 
-    public List<Team> getTeamsByPlayerFName(String fName) {
-        return teamRepository.findAll()
-                .stream()
-                .filter(team -> team.getPlayers().stream().anyMatch(player -> player.getFname().equalsIgnoreCase(fName)))
-                .collect(Collectors.toList());
-    }
-
-    public List<Team> getTeamsByPlayerLName(String lName) {
-        return teamRepository.findAll()
-                .stream()
-                .filter(team -> team.getPlayers().stream().anyMatch(player -> player.getLname().equalsIgnoreCase(lName)))
-                .collect(Collectors.toList());
-    }
-
     public Team getTeamByPlayerName(String name) {
         return teamRepository.findAll()
                 .stream()
-                .filter(team -> team.getPlayers().stream().anyMatch(player -> player.getName().equalsIgnoreCase(name)))
+                .filter(team -> team.getPlayers().stream().anyMatch(player -> player.getName().contains(name)))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public List<Team> getTeamsByWins(int wins) {
+        return teamRepository.findAll()
+                .stream()
+                .filter(team -> team.getGamesWon() >= wins)
+                .collect(Collectors.toList());
+    }
+
+    public List<Team> getTeamsByLosses(int losses) {
+        return teamRepository.findAll()
+                .stream()
+                .filter(team -> team.getGamesLost() >= losses)
+                .collect(Collectors.toList());
     }
 
     public Team saveTeam(Team team) {

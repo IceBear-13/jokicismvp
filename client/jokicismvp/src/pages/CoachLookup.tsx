@@ -1,12 +1,43 @@
+import { useState } from "react";
 import CoachSearchBar from "../components/CoachLookup/CoachSearch";
 import MainLayout from "../layout/MainLayout";
 import SearchLayout from "../layout/SearchLayout";
+import type { HeadCoach } from "../models/Coaches";
+import { CoachAPI } from "../api/CoachAPI";
 
 export default function Coach() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [coahes, setCoaches] = useState([] as HeadCoach[]);
+
+  const handleSearch = async (query: string) => {
+    setSearchQuery(query);
+    try {
+      let result: HeadCoach | HeadCoach[] = [];
+      if (query) {
+        result = await CoachAPI.getCoachByName(query);
+        setCoaches(Array.isArray(result) ? result : [result]);
+      } else {
+        result = await CoachAPI.getCoaches();;
+        setCoaches(Array.isArray(result) ? result : [result]);
+      }
+    } catch (error) {
+      console.error("Error fetching coaches:", error);
+      setCoaches([]);
+    }
+  };
+
   return (
     <MainLayout>
       <SearchLayout>
-        <CoachSearchBar />
+        <CoachSearchBar onSearch={handleSearch} />
+        <section className="flex flex-col w-full">
+          <h2 className="font-semibold text-md">Search Result(s)</h2>
+          {searchQuery && (
+            <p className="text-xs text-gray-500 mt-1">
+              Showing results for "{searchQuery}"
+            </p>
+          )}
+        </section>
         <section className="w-full mt-4">
           <div className="border border-[#dde0e4] rounded-lg overflow-hidden">
             <table className="w-full table-fixed border-collapse">
@@ -24,18 +55,16 @@ export default function Coach() {
             <div className="max-h-[300px] overflow-y-auto">
               <table className="w-full table-fixed border-collapse">
                 <tbody className="bg-white text-xs">
-                    <tr className="border-b border-[#dde0e4]">
-                        <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">Gregg Popovich</td>
-                        <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">Spurs</td>
+                  {coahes.map((coach) => (
+                    <tr key={coach.id} className="border-b border-gray-200">
+                      <td className="px-4 py-3 text-left text-[#121417]">
+                        {coach.name}
+                      </td>
+                      <td className="px-4 py-3 text-left text-[#121417]">
+                        {coach.teamCoached.name || "N/A"}
+                      </td>
                     </tr>
-                    <tr className="border-b border-[#dde0e4]">
-                        <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">Steve Kerr</td>
-                        <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">Warriors</td>
-                    </tr>
-                    <tr className="border-b border-[#dde0e4]">
-                        <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">Erik Spoelstra</td>
-                        <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">Heat</td>
-                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

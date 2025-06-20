@@ -21,13 +21,9 @@ export default function PlayerLookup() {
             switch(filter) {
                 case "name":
                     // Assuming query is formatted as "FirstName LastName"
-                    const names = query.split(" ");
-                    if (names.length >= 2) {
-                        const firstName = names[0];
-                        const lastName = names.slice(1).join(" ");
-                        result = await PlayerAPI.getPlayerByName(firstName, lastName);
-                        setPlayers(Array.isArray(result) ? result : [result]);
-                    }
+                    const name = query;
+                    result = await PlayerAPI.getPlayerByName(name);
+                    setPlayers(Array.isArray(result) ? result : [result]);
                     break;
                 case "team":
                     result = await PlayerAPI.getPlayerByTeam(query);
@@ -63,8 +59,7 @@ export default function PlayerLookup() {
                     break;
                 default:
                     // If no filter or unrecognized filter, get all players
-                    result = await PlayerAPI.getPlayers();
-                    setPlayers(result);
+                    alert("Please select a valid filter option.");
                     break;
             }
         } catch (error) {
@@ -114,10 +109,10 @@ export default function PlayerLookup() {
                                     {players.map((player) => (
                                         <tr key={player.id} className="border-b border-[#dde0e4]">
                                             <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">
-                                                {player.firstName} {player.lastName}
+                                                {player.name}
                                             </td>
                                             <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">
-                                                {player.team.name}
+                                                {player.team.name == "non" ? "More than one teams" : player.team.name}
                                             </td>
                                             <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">
                                                 {player.points}

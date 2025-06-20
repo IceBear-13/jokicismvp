@@ -1,13 +1,64 @@
-import SearchBar from "../components/GeneralLookup/SearchBar";
+import { useState } from "react";
 import TeamSearchbar from "../components/TeamLookup/SearchBar";
 import MainLayout from "../layout/MainLayout";
 import SearchLayout from "../layout/SearchLayout";
+import type { Team } from "../models/Teams";
+import { TeamAPI } from "../api/TeamAPI";
 
 export default function TeamLookup() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFilter, setSearchFilter] = useState("");
+  const [teams, setTeams] = useState([] as Team[]);
+
+  const handleSearch = async (query: string, filter: string) => {
+    setSearchQuery(query);
+    setSearchFilter(filter);
+    try {
+      let result: Team | Team[] = [];
+
+      switch (filter) {
+        case "name":
+          result = await TeamAPI.getTeamByName(query);
+          setTeams(Array.isArray(result) ? result : [result]);
+          break;
+        case "conference":
+          result = await TeamAPI.getTeamsByConference(query);
+          setTeams(Array.isArray(result) ? result : [result]);
+          break;
+        case "city":
+          result = await TeamAPI.getTeamsByCity(query);
+          setTeams(Array.isArray(result) ? result : [result]);
+          break;
+        case "wins":
+          result = await TeamAPI.getTeamsByWins(Number(query));
+          setTeams(Array.isArray(result) ? result : [result]);
+          break;
+        case "losses":
+          result = await TeamAPI.getTeamsByLosses(Number(query));
+          setTeams(Array.isArray(result) ? result : [result]);
+          break;
+        default:
+          alert("Please select a valid filter option.");
+          console.error("Invalid filter");
+      }
+    } catch (error) {
+      console.error("Error fetching teams:", error);
+      setTeams([]);
+    }
+  };
+  
   return (
     <MainLayout>
       <SearchLayout>
-        <TeamSearchbar />
+        <TeamSearchbar onSearch={handleSearch}/>
+        <section className="flex flex-col w-full">
+          <h2 className="font-semibold text-md">Search Result(s)</h2>
+          {searchQuery && (
+            <p className="text-xs text-gray-500 mt-1">
+              Showing results for "{searchQuery}" filtered by {searchFilter || "all fields"}
+            </p>
+          )}
+        </section>
         <section className="w-full mt-4">
           <div className="border border-[#dde0e4] rounded-lg overflow-hidden">
             <table className="w-full table-fixed border-collapse">
@@ -37,26 +88,16 @@ export default function TeamLookup() {
             <div className="max-h-[300px] overflow-y-auto">
               <table className="w-full table-fixed border-collapse">
                 <tbody className="bg-white text-xs">
-                  <tr className="border-b border-[#dde0e4] hover:bg-gray-100 hover:cursor-pointer">
-                    <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">
-                      Los Angeles Lakers
-                    </td>
-                    <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">
-                      LAL
-                    </td>
-                    <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">
-                      Los Angeles
-                    </td>
-                    <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">
-                      Western
-                    </td>
-                    <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">
-                        50
-                    </td>
-                    <td className="px-4 py-3 text-[#121417] w-[20%] font-normal">
-                        32
-                    </td>
-                  </tr>
+                  {teams.map((team) => (
+                    <tr key={team.id} className="border-b border-gray-200">
+                      <td className="px-4 py-3">{team.name}</td>
+                      <td className="px-4 py-3">{team.id}</td>
+                      <td className="px-4 py-3">{team.city}</td>
+                      <td className="px-4 py-3">{team.conference}</td>
+                      <td className="px-4 py-3">{team.gamesWon}</td>
+                      <td className="px-4 py-3">{team.gamesLost}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
