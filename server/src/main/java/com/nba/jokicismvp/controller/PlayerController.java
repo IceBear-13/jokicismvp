@@ -60,6 +60,30 @@ public class PlayerController {
     }
 
     /**
+     *  Get a player by their first name
+     *  Example: /api/players/fName?fname=LeBron
+     * 
+     * @param fname
+     * @return
+     */
+    @GetMapping("/fName")
+    public List<Player> getByFname(@RequestParam String fname) {
+        return playerService.getPlayerByFName(fname);
+    }
+
+    /**
+     *  Get a player by their last name
+     *  Example: /api/players/lName?lname=James
+     * 
+     * @param lname
+     * @return
+     */
+    @GetMapping("/lName")
+    public List<Player> getByLname(@RequestParam String lname) {
+        return  playerService.getPlayerByLName(lname);
+    }
+
+    /**
      * Get all players that belong to a specific team
      * Example: /api/players/team?teamName=Lakers
      * 

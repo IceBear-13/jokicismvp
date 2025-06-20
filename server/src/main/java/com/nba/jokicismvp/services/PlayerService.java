@@ -30,6 +30,25 @@ public class PlayerService {
                 .orElse(null);
     }
 
+    public Player getPlayerById(String id) {
+        return playerRepository.findById(id).orElse(null);
+    }
+
+    public List<Player> getPlayerByFName(String fName) {
+        return playerRepository.findAll()
+                .stream()
+                .filter(player -> player.getFname().equalsIgnoreCase(fName))
+                .collect(Collectors.toList());
+    }
+
+    public List<Player> getPlayerByLName(String lName) {
+        return playerRepository.findAll()
+                .stream()
+                .filter(player -> player.getLname().equalsIgnoreCase(lName))
+                .collect(Collectors.toList());
+    }
+
+
     public List<Player> getPlayersByTeamName(String teamName) {
         return playerRepository.findAll().stream()
                 .filter(player -> player.getTeam().getName().equalsIgnoreCase(teamName))

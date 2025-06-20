@@ -56,19 +56,19 @@ public class TeamService {
                 .orElse(null);
     }
 
-    // public List<Team> getTeamsByPlayerFName(String fName) {
-    //     return teamRepository.findAll()
-    //             .stream()
-    //             .filter(team -> team.getPlayers().stream().anyMatch(player -> player.getFname().equalsIgnoreCase(fName)))
-    //             .collect(Collectors.toList());
-    // }
+    public List<Team> getTeamsByPlayerFName(String fName) {
+        return teamRepository.findAll()
+                .stream()
+                .filter(team -> team.getPlayers().stream().anyMatch(player -> player.getFname().equalsIgnoreCase(fName)))
+                .collect(Collectors.toList());
+    }
 
-    // public List<Team> getTeamsByPlayerLName(String lName) {
-    //     return teamRepository.findAll()
-    //             .stream()
-    //             .filter(team -> team.getPlayers().stream().anyMatch(player -> player.getLname().equalsIgnoreCase(lName)))
-    //             .collect(Collectors.toList());
-    // }
+    public List<Team> getTeamsByPlayerLName(String lName) {
+        return teamRepository.findAll()
+                .stream()
+                .filter(team -> team.getPlayers().stream().anyMatch(player -> player.getLname().equalsIgnoreCase(lName)))
+                .collect(Collectors.toList());
+    }
 
     public Team getTeamByPlayerName(String name) {
         return teamRepository.findAll()
