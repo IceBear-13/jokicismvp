@@ -78,7 +78,7 @@ The scrapping directory contains scripts and tools for collecting and processing
 - Frontend: React, TypeScript, Vite, Tailwind CSS
 - Backend: Java, Spring Boot
 - Containerization: Docker
-- Data Storage: Database (details not specified in provided code)
+- Data Storage: Database (postgresql)
 
 ## Development
 This is a full-stack application that demonstrates modern web development practices including:
