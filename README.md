@@ -1,6 +1,8 @@
 # NBA Statistics Project - JokicIsMVP
 This project provides a comprehensive platform for accessing and exploring NBA basketball statistics. It consists of a full-stack application with a React/TypeScript frontend, Spring Boot backend, and data scraping components.
 
+This application is running and is accessible via: http://13.158.55.112/
+
 ## Project Structure
 The project is organized into three main components:
 
